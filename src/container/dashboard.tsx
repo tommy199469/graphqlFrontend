@@ -1,8 +1,6 @@
 import React , {useState ,  FunctionComponent , useEffect , useMemo} from 'react';
 import gql from 'graphql-tag';
-import { ApolloProvider } from 'react-apollo-hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button , Container}  from 'react-bootstrap';
 import { createHttpLink } from "apollo-link-http";
 import ApolloClient from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -12,8 +10,18 @@ import ReactEcharts from "echarts-for-react";
 const DashBoard: FunctionComponent<{ blueCount?: number, orangeCount?: number }> = ({ blueCount = 0 , orangeCount = 0  }) => {
 
     const client = new ApolloClient({
-        link: createHttpLink({ uri: "http://localhost:4000/graphql" }),
-        cache: new InMemoryCache()
+      link: createHttpLink({ uri: "http://13.230.232.143:4000/graphql" }),
+      cache: new InMemoryCache(),
+      defaultOptions: {
+        watchQuery: {
+          fetchPolicy: 'no-cache',
+          errorPolicy: 'ignore',
+        },
+        query: {
+          fetchPolicy: 'no-cache',
+          errorPolicy: 'all',
+        }
+      }
     });
   
     const [blue , setBlue] = useState(blueCount);
@@ -33,6 +41,7 @@ const DashBoard: FunctionComponent<{ blueCount?: number, orangeCount?: number }>
                         }
                     `
                 }).then((result)=>{
+                    console.log('result' , result);
                     let data = result && result.data && result.data.getNumbers && result.data.getNumbers
                     if(data){
                         setBlue(data.blue)

@@ -11,7 +11,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 const PlayGame: FunctionComponent<{ blueCount?: number, orangeCount?: number , backgroundColor?:String }> = ({ blueCount = 0 , orangeCount=0  }) => {
 
   const client = new ApolloClient({
-    link: createHttpLink({ uri: "http://localhost:4000/graphql" }),
+    link: createHttpLink({ uri: "http://13.230.232.143:4000/graphql" }),
     cache: new InMemoryCache()
   });
   
